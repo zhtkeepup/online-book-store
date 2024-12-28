@@ -28,7 +28,7 @@ export default function PurchasedBooks() {
       </div>
       {purchasedBooks.length === 0 ? (
         <div className="text-center">
-          <p className="mb-4">You haven't purchased any books yet.</p>
+          <p className="mb-4">{"You haven't purchased any books yet."}</p>
           <Link href="/" className="text-blue-500 hover:underline">
             Go back to the store
           </Link>
