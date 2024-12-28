@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useCart } from '../context/CartContext'
 import OrderConfirmation from './OrderConfirmation'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export default function Checkout() {
   const { cart, getTotalPrice, clearCart, addToPurchasedBooks, user } = useCart()
@@ -26,14 +27,26 @@ export default function Checkout() {
   }
 
   return (
-    <div className="border rounded-lg p-4 shadow-md">
+    <div className="border rounded-lg p-4 shadow-md bg-white">
       <h2 className="text-2xl font-bold mb-4">Checkout</h2>
       {cart.map((item) => (
-        <div key={item.id} className="mb-4 p-2 border-b">
-          <h3 className="text-lg font-semibold">{item.title}</h3>
-          <p className="text-gray-600">by {item.author}</p>
-          <p className="text-lg">${item.price.toFixed(2)} x {item.quantity}</p>
-          <p className="text-sm text-gray-500">Subtotal: ${(item.price * item.quantity).toFixed(2)}</p>
+        <div key={item.id} className="mb-4 p-2 border-b flex items-center">
+          <div className="relative w-16 h-24 mr-4">
+            <Image
+              src={item.image}
+              alt={item.title}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              style={{ objectFit: 'cover' }}
+              className="rounded-md"
+            />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold">{item.title}</h3>
+            <p className="text-gray-600">by {item.author}</p>
+            <p className="text-lg">${item.price.toFixed(2)} x {item.quantity}</p>
+            <p className="text-sm text-gray-500">Subtotal: ${(item.price * item.quantity).toFixed(2)}</p>
+          </div>
         </div>
       ))}
       <div className="mt-4 text-xl font-bold">

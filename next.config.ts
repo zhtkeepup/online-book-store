@@ -5,3 +5,5 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+module.exports = { images: { domains: ['m.media-amazon.com'], formats: ['image/avif', 'image/webp'], }, }
