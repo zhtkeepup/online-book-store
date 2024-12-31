@@ -6,6 +6,8 @@ import OrderConfirmation from './OrderConfirmation'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
+import * as ss from  "../mysensors";
+
 export default function Checkout() {
   const { cart, getTotalPrice, clearCart, addToPurchasedBooks, user } = useCart()
   const [showConfirmation, setShowConfirmation] = useState(false)
@@ -13,6 +15,9 @@ export default function Checkout() {
 
   const handlePayment = () => {
     if (!user) {
+
+      ss.sensorsTract("BuyBook",{UserName:user, TotalPrice: getTotalPrice().toFixed(2)});
+
       router.push('/login')
       return
     }

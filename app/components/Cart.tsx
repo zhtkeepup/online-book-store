@@ -5,11 +5,17 @@ import { useCart } from '../context/CartContext'
 import Checkout from './Checkout'
 import Image from 'next/image'
 
+import * as ss from  "../mysensors";
+
+
 export default function Cart() {
   const { cart, removeFromCart, updateCartItemQuantity, getTotalPrice } = useCart()
   const [showCheckout, setShowCheckout] = useState(false)
 
   if (showCheckout) {
+
+    ss.sensorsTract("CheckOut",{TotalPrice: getTotalPrice().toFixed(2)});
+
     return <Checkout />
   }
 
