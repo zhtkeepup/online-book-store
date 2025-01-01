@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 
-
+import * as ss from "../mysensors"
 
 interface Book {
   id: number
@@ -75,7 +75,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addToCart = (book: Book) => {
     
-    // ss.sensorsTract("AddToCart",{UserName:user, TotalPrice: getTotalPrice().toFixed(2)});
+    ss.sensorsTrack("AddToCart",{UserName:user, TotalPrice: getTotalPrice().toFixed(2)});
 
     setCart((prevCart) => {
       const existingItem = prevCart.find(item => item.id === book.id)

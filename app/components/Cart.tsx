@@ -6,17 +6,17 @@ import Checkout from './Checkout'
 import Image from 'next/image'
 
 
-import Sensors from "../mysensors";
+import * as ss from "../mysensors";
 
 export default function Cart() {
   const { cart, removeFromCart, updateCartItemQuantity, getTotalPrice } = useCart()
   const [showCheckout, setShowCheckout] = useState(false)
 
   if (showCheckout) {
-  
+    ss.sensorsTrack("CheckOut", {TotalPrice: getTotalPrice().toFixed(2)});
 
     return <> 
-      <Sensors opName='track' eventName='CheckOut' trackProps={{TotalPrice: getTotalPrice().toFixed(2)}}></Sensors> 
+      
       <Checkout /> </>
   }
 

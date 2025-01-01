@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
 
-import Sensors from "../mysensors";
+import * as ss from "../mysensors";
       
 
 export default function Checkout() {
@@ -17,6 +17,7 @@ export default function Checkout() {
 
   const handlePayment = () => {
     if (!user) {
+      ss.sensorsLogin(""+user);
       router.push('/login')
       return
     }

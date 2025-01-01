@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useCart } from '../context/CartContext'
 
+import * as ss from "../mysensors"
 
 export default function LoginPage() {
   const [username, setUsername] = useState('')
@@ -15,7 +16,7 @@ export default function LoginPage() {
     if (username.trim()) {
       login(username)
 
-      // ss.sensorsLogin(username);
+      ss.sensorsLogin(username);
 
 
       router.push('/')

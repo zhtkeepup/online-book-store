@@ -19,24 +19,24 @@ sensors.quick('autoTrack');
 // import sensors from '@/app/sa-sdk-javascript-1.27.1/sensorsdata.min';
 import { useEffect } from "react";
 
+export let sensors:any = {};
 
 
-export default function Sensors({opName, userId, eventName, trackProps, keyName, keyValue}:{
-    opName:string, userId:string, eventName:string, trackProps:any, keyName:string, keyValue:string}) {
+export function Sensors() {
   useEffect(()=>{
 
-    import("sa-sdk-javascript").then((sensors)=>{
-      
-    console.log("sensor....:",opName);
-    if(opName=="init") {
-      sensorsInit(sensors);
-    } else if(opName=="login") {
-      sensorsLogin(sensors, userId)
-    } else if(opName=="track") {
-      sensorsTrack(sensors, eventName, trackProps)
-    } else if(opName=="setKey") {
-      sensorsSetKey(sensors, keyName, keyValue)
-    }
+    import("sa-sdk-javascript").then((impsensors)=>{
+      sensors = impsensors;
+    // console.log("sensor....:",opName);
+    // if(opName=="init") {
+    //   sensorsInit(sensors);
+    // } else if(opName=="login") {
+    //   sensorsLogin(sensors, userId)
+    // } else if(opName=="track") {
+    //   sensorsTrack(sensors, eventName, trackProps)
+    // } else if(opName=="setKey") {
+    //   sensorsSetKey(sensors, keyName, keyValue)
+    // }
 
     });
 
@@ -49,7 +49,7 @@ export default function Sensors({opName, userId, eventName, trackProps, keyName,
 }
 
 
-function sensorsInit(sensors:any) {
+export function sensorsInit() {
   sensors.init({
     server_url: 'http://sa.jialve.cn:8106/sa?project=demoTest8',
     
@@ -78,17 +78,17 @@ function sensorsInit(sensors:any) {
 
 
 
-export function sensorsLogin(sensors, userId) {
+export function sensorsLogin(userId:string) {
     sensors.login(userId);
 }
 
-export function sensorsTrack(sensors, eventName, trackProps) {
+export function sensorsTrack(eventName:string, trackProps:any) {
     console.log("sensors.track:", eventName, trackProps);
     sensors.track(eventName, trackProps)
 }
 
 
-export function sensorsSetKey(sensors,keyName, keyValue){
+export function sensorsSetKey(keyName:string, keyValue:string){
     sensors.setProfile({keyName:keyValue});
 }
 
