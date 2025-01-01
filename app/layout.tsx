@@ -1,3 +1,5 @@
+'use client'
+
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { CartProvider } from './context/CartContext'
@@ -6,10 +8,10 @@ import Background from './components/Background'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata = {
-  title: 'Online Book Store',
-  description: 'Your favorite books, just a click away',
-}
+// export const metadata = {
+//   title: 'Online Book Store',
+//   description: 'Your favorite books, just a click away',
+// }
 
 export default function RootLayout({
   children,

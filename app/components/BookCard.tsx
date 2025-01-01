@@ -28,12 +28,12 @@ export default function BookCard({ book }: { book: Book }) {
       </div>
       <h2 className="text-xl font-semibold mb-2">{book.title}</h2>
       <p className="text-gray-600 mb-2">{book.author}</p>
-      <p className="text-lg font-bold mb-4">${book.price.toFixed(2)}</p>
+      <p className="text-lg font-bold mb-4">￥{book.price.toFixed(2)}</p>
       <button
         onClick={() => addToCart(book)}
         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors mt-auto"
       >
-        Add to Cart
+        加入购物车
       </button>
     </div>
   )

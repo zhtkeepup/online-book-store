@@ -1,3 +1,5 @@
+'use client'
+
 import PurchasedBooks from '../components/PurchasedBooks'
 
 export default function PurchasedPage() {

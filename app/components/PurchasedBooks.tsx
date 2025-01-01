@@ -10,9 +10,9 @@ export default function PurchasedBooks() {
   if (!user) {
     return (
       <div className="text-center">
-        <p className="mb-4">Please log in to view your purchased books.</p>
+        <p className="mb-4">请登录以查看您购买的图书。</p>
         <Link href="/login" className="text-blue-500 hover:underline">
-          Go to login page
+          前往登录页面
         </Link>
       </div>
     )
@@ -21,16 +21,16 @@ export default function PurchasedBooks() {
   return (
     <div className="bg-white bg-opacity-90 p-6 rounded-lg shadow-lg">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Your Purchased Books</h1>
+        <h1 className="text-3xl font-bold">您购买的图书</h1>
         <Link href="/" className="text-blue-500 hover:underline">
-          Back to Store
+          返回商店
         </Link>
       </div>
       {purchasedBooks.length === 0 ? (
         <div className="text-center">
-          <p className="mb-4">{"You haven't purchased any books yet."}</p>
+          <p className="mb-4">您还没有购买任何图书。</p>
           <Link href="/" className="text-blue-500 hover:underline">
-            Go back to the store
+            返回商店
           </Link>
         </div>
       ) : (
@@ -49,8 +49,8 @@ export default function PurchasedBooks() {
               </div>
               <h2 className="text-xl font-semibold mb-2">{book.title}</h2>
               <p className="text-gray-600 mb-2">{book.author}</p>
-              <p className="text-lg font-bold">${book.price.toFixed(2)}</p>
-              <p className="text-sm text-gray-500 mt-2">Purchased: {book.count} time{book.count > 1 ? 's' : ''}</p>
+              <p className="text-lg font-bold">￥{book.price.toFixed(2)}</p>
+              <p className="text-sm text-gray-500 mt-2">已购买: {book.count} 次</p>
             </div>
           ))}
         </div>

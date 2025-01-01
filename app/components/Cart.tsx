@@ -5,25 +5,26 @@ import { useCart } from '../context/CartContext'
 import Checkout from './Checkout'
 import Image from 'next/image'
 
-import * as ss from  "../mysensors";
 
+import Sensors from "../mysensors";
 
 export default function Cart() {
   const { cart, removeFromCart, updateCartItemQuantity, getTotalPrice } = useCart()
   const [showCheckout, setShowCheckout] = useState(false)
 
   if (showCheckout) {
+  
 
-    ss.sensorsTract("CheckOut",{TotalPrice: getTotalPrice().toFixed(2)});
-
-    return <Checkout />
+    return <> 
+      <Sensors opName='track' eventName='CheckOut' trackProps={{TotalPrice: getTotalPrice().toFixed(2)}}></Sensors> 
+      <Checkout /> </>
   }
 
   return (
     <div className="border rounded-lg p-4 shadow-md bg-white">
-      <h2 className="text-2xl font-bold mb-4">Shopping Cart</h2>
+      <h2 className="text-2xl font-bold mb-4">购物车</h2>
       {cart.length === 0 ? (
-        <p>Your cart is empty</p>
+        <p>您的购物车是空的</p>
       ) : (
         <>
           {cart.map((item) => (
@@ -41,7 +42,7 @@ export default function Cart() {
                 </div>
                 <div>
                   <h3 className="font-semibold">{item.title}</h3>
-                  <p className="text-sm text-gray-600">${item.price.toFixed(2)} each</p>
+                  <p className="text-sm text-gray-600">￥{item.price.toFixed(2)} 每本</p>
                 </div>
               </div>
               <div className="flex justify-between items-center mt-2">
@@ -64,19 +65,19 @@ export default function Cart() {
                   onClick={() => removeFromCart(item.id)}
                   className="text-red-500 hover:text-red-700"
                 >
-                  Remove
+                  删除
                 </button>
               </div>
             </div>
           ))}
           <div className="mt-4 text-xl font-bold">
-            Total: ${getTotalPrice().toFixed(2)}
+            总计: ￥{getTotalPrice().toFixed(2)}
           </div>
           <button
             onClick={() => setShowCheckout(true)}
             className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors w-full"
           >
-            Checkout
+            结算
           </button>
         </>
       )}

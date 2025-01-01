@@ -3,14 +3,16 @@
 import BookList from './components/BookList'
 import Cart from './components/Cart'
 
-import * as ss from "./mysensors";
+import Sensors from "./mysensors";
 
 export default function Home() {
 
-  ss.sensorsInit();
+ // ss.sensorsInit();
+
 
   return (
     <main className="container mx-auto px-4 py-8">
+      <Sensors opName='init'></Sensors>
       <h1 className="text-3xl font-bold mb-8">Welcome to Our Online Book Store</h1>
       <div className="flex flex-col md:flex-row gap-8">
         <div className="md:w-3/4">

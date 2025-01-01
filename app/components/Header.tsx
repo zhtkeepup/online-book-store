@@ -17,35 +17,35 @@ export default function Header() {
     <header className="bg-white bg-opacity-80 backdrop-blur-sm shadow-md sticky top-0 z-10">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-xl font-bold">
-          Online Book Store
+          在线书店
         </Link>
         <nav>
           <ul className="flex space-x-4">
             <li>
               <Link href="/" className="hover:underline">
-                Home
+                首页
               </Link>
             </li>
             <li>
               <Link href="/purchased" className="hover:underline">
-                Purchased Books
+                已购图书
               </Link>
             </li>
             {user ? (
               <>
                 <li>
-                  <span>Welcome, {user}!</span>
+                  <span>欢迎, {user}!</span>
                 </li>
                 <li>
                   <button onClick={handleLogout} className="hover:underline">
-                    Logout
+                    登出
                   </button>
                 </li>
               </>
             ) : (
               <li>
                 <Link href="/login" className="hover:underline">
-                  Login
+                  登录
                 </Link>
               </li>
             )}
