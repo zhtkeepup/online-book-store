@@ -19,7 +19,9 @@ sensors.quick('autoTrack');
 // import sensors from '@/app/sa-sdk-javascript-1.27.1/sensorsdata.min';
 import { useEffect } from "react";
 
-export let sensors:any = {};
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export let sensors: any = {};
 
 
 export function Sensors() {
