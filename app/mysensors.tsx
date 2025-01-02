@@ -27,16 +27,8 @@ export function Sensors() {
 
     import("sa-sdk-javascript").then((impsensors)=>{
       sensors = impsensors;
-    // console.log("sensor....:",opName);
-    // if(opName=="init") {
-    //   sensorsInit(sensors);
-    // } else if(opName=="login") {
-    //   sensorsLogin(sensors, userId)
-    // } else if(opName=="track") {
-    //   sensorsTrack(sensors, eventName, trackProps)
-    // } else if(opName=="setKey") {
-    //   sensorsSetKey(sensors, keyName, keyValue)
-    // }
+
+      sensorsInit();
 
     });
 
