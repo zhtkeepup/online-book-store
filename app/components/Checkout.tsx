@@ -22,6 +22,10 @@ export default function Checkout() {
       return
     }
     // In a real application, you would integrate with a payment gateway here
+    
+
+    ss.sensorsTrack("支付", {TotalPrice: getTotalPrice().toFixed(2)});
+
     addToPurchasedBooks(cart)
     setShowConfirmation(true)
     clearCart()

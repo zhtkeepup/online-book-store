@@ -75,7 +75,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addToCart = (book: Book) => {
     
-    ss.sensorsTrack("AddToCart",{UserName:user, TotalPrice: getTotalPrice().toFixed(2)});
+    ss.sensorsTrack("加入购物车",{UserName:user, TotalPrice: getTotalPrice().toFixed(2)});
 
     setCart((prevCart) => {
       const existingItem = prevCart.find(item => item.id === book.id)

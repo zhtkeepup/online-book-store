@@ -6,8 +6,9 @@
 <script charset="UTF-8">
 var sensors = window['sensorsDataAnalytic201505'];
 sensors.init({
-  server_url: 'http://sa.jialve.cn:8106/sa?project=demoTest8',
+  server_url: 'https://dsjyxdata.ctbu.edu.cn/sa',
   heatmap:{scroll_notice_map:'not_collect'},
+  is_track_single_page:true,
   use_client_time:true,
   send_type:'beacon'    
 });
@@ -45,7 +46,9 @@ export function Sensors() {
 
 export function sensorsInit() {
   sensors.init({
-    server_url: 'http://sa.jialve.cn:8106/sa?project=demoTest8',
+    // server_url: 'http://sa.jialve.cn:8106/sa?project=demoTest8',
+    // server_url: 'https://dsjyxdata.ctbu.edu.cn/sa?project=default',
+    server_url: 'https://dsjyxdata.ctbu.edu.cn/sa',
     
     // is_track_single_page:true, // 单页面配置，默认开启，若页面中有锚点设计，需要将该配置删除，否则触发锚点会多触发 $pageview 事件
   
