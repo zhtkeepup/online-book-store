@@ -1,15 +1,10 @@
-'use client'
 
+'use client'
 import BookList from './components/BookList'
 import Cart from './components/Cart'
 
 import * as ss from "./mysensors";
-
 export default function Home() {
-
- // ss.sensorsInit();
-
-
   return (
     <main className="container mx-auto px-4 py-8">
       <ss.Sensors ></ss.Sensors>

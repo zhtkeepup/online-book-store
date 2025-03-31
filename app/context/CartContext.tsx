@@ -1,6 +1,16 @@
-'use client'
+"use client"
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
+import {
+  fetchCartItems,
+  addItemToCart,
+  updateItemQuantity,
+  removeItemFromCart,
+  clearUserCart,
+  fetchPurchasedBooks,
+  purchaseCartItems,
+} from "../actions/cartActions"
+import { loginUser } from "../actions/userActions"
 
 import * as ss from "../mysensors"
 
@@ -14,25 +24,34 @@ interface Book {
 
 interface CartItem extends Book {
   quantity: number
+  book_id?: number
 }
 
 interface PurchasedBook extends Book {
   count: number
+  book_id?: number
+}
+
+interface User {
+  id: number
+  username: string
 }
 
 interface CartContextType {
   cart: CartItem[]
   purchasedBooks: PurchasedBook[]
-  addToCart: (book: Book) => void
-  removeFromCart: (id: number) => void
-  updateCartItemQuantity: (id: number, quantity: number) => void
+  addToCart: (book: Book) => Promise<void>
+  removeFromCart: (id: number) => Promise<void>
+  updateCartItemQuantity: (id: number, quantity: number) => Promise<void>
   getTotalPrice: () => number
-  clearCart: () => void
+  clearCart: () => Promise<void>
   getCartItemsCount: () => number
-  addToPurchasedBooks: (books: CartItem[]) => void
-  user: string | null
-  login: (username: string) => void
+  addToPurchasedBooks: (books: CartItem[]) => Promise<boolean>
+  user: User | null
+  login: (username: string) => Promise<boolean>
   logout: () => void
+  loading: boolean
+  error: string | null
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
@@ -40,133 +59,206 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([])
   const [purchasedBooks, setPurchasedBooks] = useState<PurchasedBook[]>([])
-  const [user, setUser] = useState<string | null>(null)
+  const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
+  // Check for stored user on initial load
   useEffect(() => {
-    const storedUser = localStorage.getItem('user')
-    if (storedUser) {
-      setUser(storedUser)
-      const storedPurchasedBooks = localStorage.getItem(`purchasedBooks_${storedUser}`)
-      if (storedPurchasedBooks) {
-        setPurchasedBooks(JSON.parse(storedPurchasedBooks))
-      }
+    const storedUsername = localStorage.getItem("username")
+    if (storedUsername) {
+      login(storedUsername).then(() => {
+        setLoading(false)
+      })
+    } else {
+      setLoading(false)
     }
-    const storedCart = localStorage.getItem('cart')
-    if (storedCart) setCart(JSON.parse(storedCart))
   }, [])
 
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart))
-  }, [cart])
-
+  // Fetch cart items when user changes
   useEffect(() => {
     if (user) {
-      localStorage.setItem(`purchasedBooks_${user}`, JSON.stringify(purchasedBooks))
-    }
-  }, [purchasedBooks, user])
-
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem('user', user)
-    } else {
-      localStorage.removeItem('user')
+      fetchUserCartItems()
+      fetchUserPurchasedBooks()
     }
   }, [user])
 
-  const addToCart = (book: Book) => {
-    
-    ss.sensorsTrack("加入购物车",{UserName:user, TotalPrice: getTotalPrice().toFixed(2)});
+  const fetchUserCartItems = async () => {
+    if (!user) return
 
-    setCart((prevCart) => {
-      const existingItem = prevCart.find(item => item.id === book.id)
-      if (existingItem) {
-        return prevCart.map(item =>
-          item.id === book.id ? { ...item, quantity: item.quantity + 1 } : item
-        )
-      }
-      return [...prevCart, { ...book, quantity: 1 }]
-    })
+    const response = await fetchCartItems(user.id)
+    if (response.success) {
+      setCart(
+        response.cartItems.map((item: any) => ({
+          id: item.book_id,
+          title: item.title,
+          author: item.author,
+          price: Number.parseFloat(item.price),
+          image: item.image,
+          quantity: item.quantity,
+        })),
+      )
+    } else {
+      setError("获取购物车失败")
+    }
   }
 
-  const removeFromCart = (id: number) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id))
+  const fetchUserPurchasedBooks = async () => {
+    if (!user) return
+
+    const response = await fetchPurchasedBooks(user.id)
+    if (response.success) {
+      setPurchasedBooks(
+        response.purchasedBooks.map((item: any) => ({
+          id: item.book_id,
+          title: item.title,
+          author: item.author,
+          price: Number.parseFloat(item.price),
+          image: item.image,
+          count: item.count,
+        })),
+      )
+    } else {
+      setError("获取已购图书失败")
+    }
   }
 
-  const updateCartItemQuantity = (id: number, quantity: number) => {
-    setCart((prevCart) =>
-      prevCart.map(item =>
-        item.id === id ? { ...item, quantity: Math.max(0, quantity) } : item
-      ).filter(item => item.quantity > 0)
-    )
+  const addToCart = async (book: Book) => {
+    if (!user) return
+
+    setError(null)
+    const response = await addItemToCart(user.id, book.id)
+    if (response.success) {
+      ss.sensorsTrack("加入购物车",{UserName:user, TotalPrice: getTotalPrice().toFixed(2)});
+
+      await fetchUserCartItems()
+    } else {
+      setError("添加到购物车失败")
+    }
+  }
+
+  const removeFromCart = async (id: number) => {
+    if (!user) return
+
+    setError(null)
+    const response = await removeItemFromCart(user.id, id)
+    if (response.success) {
+      await fetchUserCartItems()
+    } else {
+      setError("从购物车移除失败")
+    }
+  }
+
+  const updateCartItemQuantity = async (id: number, quantity: number) => {
+    if (!user) return
+
+    setError(null)
+    const response = await updateItemQuantity(user.id, id, quantity)
+    if (response.success) {
+      await fetchUserCartItems()
+    } else {
+      setError("更新数量失败")
+    }
   }
 
   const getTotalPrice = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0)
   }
 
-  const clearCart = () => {
-    setCart([])
+  const clearCart = async () => {
+    if (!user) return
+
+    setError(null)
+    const response = await clearUserCart(user.id)
+    if (response.success) {
+      setCart([])
+    } else {
+      setError("清空购物车失败")
+    }
   }
 
   const getCartItemsCount = () => {
     return cart.reduce((total, item) => total + item.quantity, 0)
   }
 
-  const addToPurchasedBooks = (books: CartItem[]) => {
-    setPurchasedBooks((prevPurchasedBooks) => {
-      const updatedBooks = [...prevPurchasedBooks]
-      books.forEach((book) => {
-        const existingBookIndex = updatedBooks.findIndex((b) => b.id === book.id)
-        if (existingBookIndex !== -1) {
-          updatedBooks[existingBookIndex].count += book.quantity
-        } else {
-          updatedBooks.push({ ...book, count: book.quantity })
-        }
-      })
-      return updatedBooks
-    })
+  const addToPurchasedBooks = async (books: CartItem[]) => {
+    if (!user) return false
+
+    setError(null)
+    const response = await purchaseCartItems(
+      user.id,
+      books.map((book) => ({
+        book_id: book.id,
+        quantity: book.quantity,
+      })),
+    )
+
+    if (response.success) {
+      await fetchUserPurchasedBooks()
+      return true
+    } else {
+      setError("购买失败")
+      return false
+    }
   }
 
-  const login = (username: string) => {
-    setUser(username)
-    const storedPurchasedBooks = localStorage.getItem(`purchasedBooks_${username}`)
-    if (storedPurchasedBooks) {
-      setPurchasedBooks(JSON.parse(storedPurchasedBooks))
-    } else {
-      setPurchasedBooks([])
+  const login = async (username: string): Promise<boolean> => {
+    try {
+      setLoading(true)
+      setError(null)
+      const response = await loginUser(username)
+
+      if (response.success && response.user) {
+        setUser({
+          id: response.user.id,
+          username: response.user.username,
+        })
+        localStorage.setItem("username", username)
+        return true
+      } else {
+        setError(response.error || "登录失败")
+        return false
+      }
+    } catch (error) {
+      console.error("Login error:", error)
+      setError("登录时发生错误")
+      return false
+    } finally {
+      setLoading(false)
     }
   }
 
   const logout = () => {
     setUser(null)
-    clearCart()
+    setCart([])
     setPurchasedBooks([])
+    localStorage.removeItem("username")
   }
 
-  return (
-    <CartContext.Provider value={{ 
-      cart, 
-      purchasedBooks, 
-      addToCart, 
-      removeFromCart, 
-      updateCartItemQuantity,
-      getTotalPrice, 
-      clearCart, 
-      getCartItemsCount, 
-      addToPurchasedBooks,
-      user,
-      login,
-      logout
-    }}>
-      {children}
-    </CartContext.Provider>
-  )
+  const contextValue: CartContextType = {
+    cart,
+    purchasedBooks,
+    addToCart,
+    removeFromCart,
+    updateCartItemQuantity,
+    getTotalPrice,
+    clearCart,
+    getCartItemsCount,
+    addToPurchasedBooks,
+    user,
+    login,
+    logout,
+    loading,
+    error,
+  }
+
+  return <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>
 }
 
 export function useCart() {
   const context = useContext(CartContext)
   if (context === undefined) {
-    throw new Error('useCart must be used within a CartProvider')
+    throw new Error("useCart must be used within a CartProvider")
   }
   return context
 }

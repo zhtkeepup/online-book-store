@@ -13,11 +13,7 @@ export default function Cart() {
   const [showCheckout, setShowCheckout] = useState(false)
 
   if (showCheckout) {
-    // ss.sensorsTrack("支付", {TotalPrice: getTotalPrice().toFixed(2)});
-
-    return <> 
-      
-      <Checkout /> </>
+    return <Checkout />
   }
 
   return (

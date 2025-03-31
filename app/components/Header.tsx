@@ -1,8 +1,8 @@
-'use client'
+"use client"
 
-import Link from 'next/link'
-import { useCart } from '../context/CartContext'
-import { useRouter } from 'next/navigation'
+import Link from "next/link"
+import { useCart } from "../context/CartContext"
+import { useRouter } from "next/navigation"
 
 export default function Header() {
   const { user, logout } = useCart()
@@ -10,7 +10,7 @@ export default function Header() {
 
   const handleLogout = () => {
     logout()
-    router.push('/')
+    router.push("/")
   }
 
   return (
@@ -34,7 +34,7 @@ export default function Header() {
             {user ? (
               <>
                 <li>
-                  <span>欢迎, {user}!</span>
+                  <span>欢迎, {user.username}!</span>
                 </li>
                 <li>
                   <button onClick={handleLogout} className="hover:underline">

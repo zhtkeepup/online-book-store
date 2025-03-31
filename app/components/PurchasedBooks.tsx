@@ -1,8 +1,8 @@
-'use client'
+"use client"
 
-import { useCart } from '../context/CartContext'
-import Link from 'next/link'
-import Image from 'next/image'
+import { useCart } from "../context/CartContext"
+import Link from "next/link"
+import Image from "next/image"
 
 export default function PurchasedBooks() {
   const { purchasedBooks, user } = useCart()
@@ -39,11 +39,11 @@ export default function PurchasedBooks() {
             <div key={book.id} className="border rounded-lg p-4 shadow-md bg-white flex flex-col">
               <div className="relative h-64 mb-4">
                 <Image
-                  src={book.image}
+                  src={book.image || "/placeholder.svg"}
                   alt={book.title}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  style={{ objectFit: 'cover' }}
+                  style={{ objectFit: "cover" }}
                   className="rounded-md"
                 />
               </div>

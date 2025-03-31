@@ -15,13 +15,16 @@ export default function OrderConfirmation({ setShowConfirmation }: OrderConfirma
 
   return (
     <div className="border rounded-lg p-4 shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Order Confirmation</h2>
-      <p className="mb-4">Thank you for your order! Your payment has been processed successfully.</p>
+      {/* <h2 className="text-2xl font-bold mb-4">Order Confirmation</h2> */}
+      <h2 className="text-2xl font-bold mb-4">支付成功</h2>
+      {/* <p className="mb-4">Thank you for your order! Your payment has been processed successfully.</p> */}
+      <p className="mb-4">感谢您的购买</p>
       <button
         onClick={handleBackToShopping}
         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
       >
-        Back to Shopping
+        {/* Back to Shopping */}
+        回到首页
       </button>
     </div>
   )
