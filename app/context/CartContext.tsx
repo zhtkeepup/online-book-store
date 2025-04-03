@@ -129,7 +129,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setError(null)
     const response = await addItemToCart(user.id, book.id)
     if (response.success) {
-      ss.sensorsTrack("加入购物车",{UserName:user, TotalPrice: getTotalPrice().toFixed(2)});
+      ss.sensorsTrack("AddToCart",{name:"加入购物车", UserName:user, TotalPrice: getTotalPrice().toFixed(2)});
 
       await fetchUserCartItems()
     } else {

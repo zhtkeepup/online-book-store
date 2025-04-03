@@ -28,7 +28,7 @@ export default function Checkout() {
     const success = await addToPurchasedBooks(cart)
 
     if (success) {
-      ss.sensorsTrack("支付", {TotalPrice: getTotalPrice().toFixed(2)});
+      ss.sensorsTrack("Payment", {name:"支付",TotalPrice: getTotalPrice().toFixed(2)});
 
       setShowConfirmation(true)
       clearCart()
