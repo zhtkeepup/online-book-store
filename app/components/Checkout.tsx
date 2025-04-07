@@ -18,7 +18,6 @@ export default function Checkout() {
 
   const handlePayment = async () => {
     if (!user) {
-      ss.sensorsLogin(""+user);
       router.push("/login")
       return
     }

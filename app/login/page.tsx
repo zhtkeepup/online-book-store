@@ -6,6 +6,8 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useCart } from "../context/CartContext"
 
+import * as ss from "../mysensors";
+
 export default function LoginPage() {
   const [username, setUsername] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -27,6 +29,7 @@ export default function LoginPage() {
     const success = await login(username)
 
     if (success) {
+      ss.sensorsLogin(""+username);
       router.push("/")
     } else {
       setError("登录失败，请重试")
