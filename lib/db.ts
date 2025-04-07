@@ -5,13 +5,20 @@
 
 import {Pool} from "pg";
 
-const pool = new Pool({
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+
+
+export const pool = new Pool({
     user: 'cqgsdx',
     host: 'localhost',
     database: 'cqgsdxdb',
     password: 'cqgsdx',
     port: 5432,
   });
+
 
 
 // Helper function to check if a user exists

@@ -12,6 +12,10 @@ import {
 } from "../actions/cartActions"
 import { loginUser } from "../actions/userActions"
 
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import * as ss from "../mysensors"
 
 interface Book {
@@ -87,7 +91,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (!user) return
 
     const response = await fetchCartItems(user.id)
-    if (response.success) {
+    if (response!=undefined && response.cartItems!=undefined && response.success) {
       setCart(
         response.cartItems.map((item: any) => ({
           id: item.book_id,
@@ -107,7 +111,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (!user) return
 
     const response = await fetchPurchasedBooks(user.id)
-    if (response.success) {
+    if (response!=undefined && response.purchasedBooks!=undefined && response.success) {
       setPurchasedBooks(
         response.purchasedBooks.map((item: any) => ({
           id: item.book_id,

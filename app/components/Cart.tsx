@@ -5,8 +5,11 @@ import { useCart } from '../context/CartContext'
 import Checkout from './Checkout'
 import Image from 'next/image'
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import * as ss from "../mysensors";
+
 
 export default function Cart() {
   const { cart, removeFromCart, updateCartItemQuantity, getTotalPrice } = useCart()

@@ -12,6 +12,9 @@ interface Book {
   image: string
 }
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 export default function BookList() {
   const [books, setBooks] = useState<Book[]>([])
   const [loading, setLoading] = useState(true)
@@ -19,7 +22,7 @@ export default function BookList() {
   useEffect(() => {
     const getBooks = async () => {
       const response = await fetchBooks()
-      if (response.success) {
+      if (response!=undefined && response.books!=undefined && response.success) {
         setBooks(
           response.books.map((book: any) => ({
             id: book.id,

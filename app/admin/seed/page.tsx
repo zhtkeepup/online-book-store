@@ -14,9 +14,13 @@ export default function SeedPage() {
 
     try {
       const result = await seedBooks()
+      console.log("==========+++++++++++++++++++123 admin seed,res:",result);
       if (result.success) {
         setStatus("success")
-        setMessage(result.message)
+        if(result!=undefined && result.message!=undefined) {
+            setMessage(result.message)
+        }
+        
       } else {
         setStatus("error")
         setMessage(result.error || "添加数据失败")
