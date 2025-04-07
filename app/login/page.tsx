@@ -39,7 +39,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      
+      <ss.Sensors ></ss.Sensors>
       <div className="p-8 bg-white rounded shadow-md w-96">
       <div>这是模拟环境，无需密码，输入自定义用户名直接登录</div>
       <h1 className="text-2xl font-bold mb-6 text-center">登录</h1>
