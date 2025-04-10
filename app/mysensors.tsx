@@ -63,6 +63,7 @@ export function sensorsInit() {
     show_log:true,
   });
   
+  console.log("当前浏览器地址,location.href:", location.href);
   // 注册公共属性
   sensors.registerPage({
     current_url: location.href,
@@ -85,8 +86,8 @@ export function sensorsTrack(eventName:string, trackProps:any) {
 }
 
 
-export function sensorsSetKey(keyName:string, keyValue:string){
-    sensors.setProfile({keyName:keyValue});
+export function sensorsSetKeyValue(kv:{}){
+    sensors.setProfile(kv);
 }
 
 // export function sensorsSetItem() {

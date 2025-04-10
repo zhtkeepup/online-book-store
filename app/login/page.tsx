@@ -30,6 +30,15 @@ export default function LoginPage() {
 
     if (success) {
       ss.sensorsLogin(""+username);
+      let cc = username.charAt(username.length-1);
+      if(cc.charCodeAt(0) % 2 === 0) {
+        ss.sensorsSetKeyValue({Sex:"女"});
+        ss.sensorsSetKeyValue({City:"重庆市"});
+      } else {
+        ss.sensorsSetKeyValue({Sex:"男"});
+        ss.sensorsSetKeyValue({City:"成都市"});
+      }
+      
       router.push("/")
     } else {
       setError("登录失败，请重试")
