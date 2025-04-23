@@ -26,9 +26,17 @@ export default function Checkout() {
     // In a real application, you would integrate with a payment gateway here
     const success = await addToPurchasedBooks(cart)
 
-    if (success) {
-      ss.sensorsTrack("Payment", {name:"支付",TotalPrice: getTotalPrice().toFixed(2)});
+    const bookIdList:number[] = []
+    cart.forEach(b => {
+      bookIdList.push(b.id)
+    } )
 
+    if (success) {
+      ss.sensorsTrack("Payment", {name:"支付",
+        bookId:bookIdList, 
+        TotalPrice: getTotalPrice().toFixed(2),
+        TotalPriceNum: getTotalPrice()});
+        
       setShowConfirmation(true)
       clearCart()
     } else {

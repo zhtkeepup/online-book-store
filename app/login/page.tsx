@@ -30,6 +30,9 @@ export default function LoginPage() {
 
     if (success) {
       ss.sensorsLogin(""+username);
+
+      ss.sensorsTrack("Login", {name:"登录",LoginUsername: username});
+      
       let cc = username.charAt(username.length-1);
       if(cc.charCodeAt(0) % 2 === 0) {
         ss.sensorsSetKeyValue({Sex:"女"});
