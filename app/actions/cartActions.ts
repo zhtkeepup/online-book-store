@@ -10,10 +10,7 @@ import {
   addToPurchasedBooks,
 } from "@/lib/db"
 
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-
 export async function fetchCartItems(userId: number) {
   try {
     const cartItems = await getCartItems(userId)
@@ -77,8 +74,6 @@ export async function fetchPurchasedBooks(userId: number) {
   }
 }
 
-
-
 export async function purchaseCartItems(userId: number, cartItems: any[]) {
   try {
     await addToPurchasedBooks(userId, cartItems)
@@ -88,4 +83,3 @@ export async function purchaseCartItems(userId: number, cartItems: any[]) {
     return { success: false, error: "Failed to purchase cart items" }
   }
 }
-

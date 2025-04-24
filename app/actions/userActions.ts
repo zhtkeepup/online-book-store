@@ -39,5 +39,3 @@ export async function getUserData(username: string) {
     return { success: false, error: "Failed to get user data" }
   }
 }
-
-

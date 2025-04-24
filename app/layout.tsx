@@ -2,6 +2,7 @@ import type React from "react"
 import "./globals.css"
 import { Inter } from "next/font/google"
 import { CartProvider } from "./context/CartContext"
+import { MessageProvider } from "./context/MessageContext"
 import Header from "./components/Header"
 import Background from "./components/Background"
 import LoadingState from "./components/LoadingState"
@@ -23,13 +24,14 @@ export default function RootLayout({
       <body className={inter.className}>
         <Background />
         <CartProvider>
-          <LoadingState>
-            <Header />
-            <main className="container mx-auto px-4 py-8 bg-white bg-opacity-80 min-h-screen">{children}</main>
-          </LoadingState>
+          <MessageProvider>
+            <LoadingState>
+              <Header />
+              <main className="container mx-auto px-4 py-8 bg-white bg-opacity-80 min-h-screen">{children}</main>
+            </LoadingState>
+          </MessageProvider>
         </CartProvider>
       </body>
     </html>
   )
 }
-

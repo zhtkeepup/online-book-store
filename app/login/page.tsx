@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useCart } from "../context/CartContext"
 
@@ -12,9 +12,16 @@ export default function LoginPage() {
   const [username, setUsername] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
-  const { login } = useCart()
+  const [mounted, setMounted] = useState(false)
   const router = useRouter()
-  
+
+  // Only access the cart context after component is mounted on the client
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Use optional chaining to safely access the cart context
+  const { login } = useCart?.() || {}
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -22,6 +29,11 @@ export default function LoginPage() {
 
     if (!username.trim()) {
       setError("请输入用户名")
+      return
+    }
+
+    if (!login) {
+      setError("登录功能暂时不可用")
       return
     }
 
@@ -47,6 +59,18 @@ export default function LoginPage() {
       setError("登录失败，请重试")
     }
     setIsLoading(false)
+  }
+
+  // Don't render the form until the component is mounted on the client
+  if (!mounted) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="p-8 bg-white rounded shadow-md w-96">
+          <h1 className="text-2xl font-bold mb-6 text-center">登录</h1>
+          <div className="text-center">加载中...</div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -84,4 +108,3 @@ export default function LoginPage() {
     </div>
   )
 }
-

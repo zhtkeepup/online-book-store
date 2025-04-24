@@ -17,7 +17,6 @@ interface Book {
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 export default function BookCard({ book }: { book: Book }) {
-  
   const { addToCart, user, error } = useCart()
   const [isAdding, setIsAdding] = useState(false)
   const [localError, setLocalError] = useState<string | null>(null)
@@ -60,4 +59,3 @@ export default function BookCard({ book }: { book: Book }) {
     </div>
   )
 }
-

@@ -5,7 +5,6 @@ import { getBooks, getBookById } from "@/lib/db"
 export async function fetchBooks() {
   try {
     const books = await getBooks()
-    console.log("++++++getBooks,books:",books);
     return { success: true, books }
   } catch (error) {
     console.error("Error fetching books:", error)
@@ -22,4 +21,3 @@ export async function fetchBookById(id: number) {
     return { success: false, error: "Failed to fetch book" }
   }
 }
-

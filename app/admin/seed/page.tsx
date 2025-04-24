@@ -14,7 +14,6 @@ export default function SeedPage() {
 
     try {
       const result = await seedBooks()
-      console.log("==========+++++++++++++++++++123 admin seed,res:",result);
       if (result.success) {
         setStatus("success")
         if(result!=undefined && result.message!=undefined) {
@@ -68,5 +67,3 @@ export default function SeedPage() {
     </div>
   )
 }
-
-
