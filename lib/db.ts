@@ -172,3 +172,68 @@ export async function addToPurchasedBooks(userId: number, cartItems: any[]) {
   await clearCart(userId)
 }
 
+
+
+// Helper function to get all messages for a user
+export async function getUserMessages(userId: number) {
+
+  return (await pool.query(`
+    SELECT * FROM messages
+    WHERE user_id = ${userId}
+    ORDER BY created_at DESC
+  `)).rows
+}
+
+// Helper function to get unread message count for a user
+export async function getUnreadMessageCount(userId: number) {
+
+  const result =  (await pool.query(`
+    SELECT COUNT(*) FROM messages
+    WHERE user_id = ${userId} AND is_read = false
+  `)).rows
+
+
+  return Number.parseInt(result[0].count)
+}
+
+// Helper function to get a specific message
+export async function getMessage(messageId: number, userId: number) {
+
+  const result =  (await pool.query(`
+    SELECT * FROM messages
+    WHERE id = ${messageId} AND user_id = ${userId}
+  `)).rows
+
+
+  return result[0] || null
+}
+
+// Helper function to mark a message as read
+export async function markMessageAsRead(messageId: number, userId: number) {
+
+  return (await pool.query(`
+   UPDATE messages
+    SET is_read = true
+    WHERE id = ${messageId} AND user_id = ${userId}
+    RETURNING *
+  `)).rows
+}
+
+// Helper function to delete a message
+export async function deleteMessage(messageId: number, userId: number) {
+
+  return (await pool.query(`
+    DELETE FROM messages
+    WHERE id = ${messageId} AND user_id = ${userId}
+   `)).rows
+}
+
+// Helper function to create a new message
+export async function createMessage(userId: number, title: string, content: string) {
+
+  return (await pool.query(`
+    INSERT INTO messages (user_id, title, content)
+    VALUES (${userId}, '${title}', '${content}')
+    RETURNING *
+   `)).rows
+}
