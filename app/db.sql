@@ -36,3 +36,43 @@ CREATE TABLE purchased_books (
   purchased_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   UNIQUE(user_id, book_id)
 );
+
+
+
+
+
+
+-- Create messages table
+CREATE TABLE IF NOT EXISTS messages (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  title VARCHAR(255) NOT NULL,
+  content TEXT NOT NULL,
+  is_read BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Add some sample messages for testing
+INSERT INTO messages (user_id, title, content)
+SELECT 
+  u.id,
+  '欢迎来到在线书店！',
+  '感谢您注册我们的在线书店。浏览我们的精选图书，享受阅读的乐趣！'
+FROM users u
+LIMIT 5;
+
+INSERT INTO messages (user_id, title, content)
+SELECT 
+  u.id,
+  '新书上架通知',
+  '我们最近上架了多本新书，包括畅销书籍和经典名著。立即查看！'
+FROM users u
+LIMIT 5;
+
+INSERT INTO messages (user_id, title, content)
+SELECT 
+  u.id,
+  '限时折扣活动',
+  '所有图书本周限时8折优惠！不要错过这个难得的机会。'
+FROM users u
+LIMIT 5;
